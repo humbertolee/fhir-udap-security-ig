@@ -26,6 +26,26 @@ This Guide is divided into several pages which are listed at the top of each pag
 - [General Guidance]\: This page provides general guidance applicable to multiple authorization and authentication workflows.
 - [FHIR Artifacts]\: This page provides additional conformance artifacts for FHIR resources.
 
+
+### Trust Communities
+
+#### What is a Trust Community?
+
+A trust community is a group of organizations that agree to follow shared policies and standards to securely exchange data — similar to how countries recognize each other’s passports to allow travelers across borders. Just as a passport proves your identity and citizenship, digital certificates serve as verifiable credentials in a digital trust framework. UDAP (Unified Data Access Profiles) builds on this concept by using X.509 digital certificates to establish technical trust among participants. These certificates act as digital ID cards for systems and organizations, validated by trusted Certificate Authorities (CAs). At the center of this system are trust anchors — widely recognized CAs that the entire trust community agrees to trust. If a participant’s certificate is issued by one of these trust anchors, it is automatically considered valid and trustworthy by others in the community. This shared reliance on trust anchors allows for seamless, scalable authentication and secure communication, without the need for one-off agreements between each pair of organizations. By automating trust decisions and aligning with a common framework, UDAP empowers healthcare networks to scale technical trust efficiently, enabling broader interoperability and faster, more secure data exchange across the ecosystem.
+
+#### Trust Community Checklist
+
+This section lists some additional topics to be addressed by trust communities adopting this guide:
+
+1. Assignment of unique URIs to servers for use in certificates and in the `iss` and `sub` claims of signed metadata elements (see [Section 2.3]).
+1. URI used to identify the community in metadata requests (see [Section 2.4]).
+1. Assignment of unique URIs to client applications for use in certificates and in the `iss` and `sub` claims of software statements (see [Section 3.1]).
+1. Assignment of unique URIs to organizational requestors for use in a B2B Authorization Extension Object (see `organization_id` in [Section 5.2.1.1]).
+1. Allowed values for requestor roles in a B2B Authorization Extension Object (see `subject_role` in [Section 5.2.1.1]).
+1. Permitted purposes of use for which data may be requested in a B2B Authorization Extension Object (see `purpose_of_use` in [Section 5.2.1.1]).
+1. Consent and authorization policies that may be asserted in a B2B Authorization Extension Object and supporting documentation (see `consent_policy` and `consent_reference` in [Section 5.2.1.1]).
+1. Other community policies or conditions that an actor may need to meet before exchanging data with community participants or with other trust communities. Examples include community legal agreements, certificate policies, policies regarding what claims an actor has the authority to assert, and other community requirements relating to the specific use cases, client types and/or grant types supported by the community.
+
 ### JSON Web Token (JWT) Requirements
 
 The requirements in this section are applicable to both consumer-facing and B2B apps and the servers that support them.
@@ -103,18 +123,5 @@ All JWTs defined in this guide **SHALL** contain a Javascript Object Signing and
 All JWTs defined in this guide contain the `iss`, `exp`, and `jti` claims. The value of the `jti` claim is a nonce string value that uniquely identifies a JWT until the expiration of that JWT, i.e. until the time specified in the `exp` claim of that JWT has passed. Thus, the issuer of a JWT **SHALL NOT** reuse the same `jti` value in a new JWT with the same `iss` value prior to the expiration of the previous JWT. Implementers who track `jti` values to detect the replay of received JWTs **SHALL** allow a `jti` value to be reused after the expiration of any other previously received JWTs containing the same `iss` and `jti` values.
 
 Additional JWT Claim requirements are defined later in this guide. 
-
-### Trust Community Checklist
-
-This section lists some additional topics to be addressed by trust communities adopting this guide:
-
-1. Assignment of unique URIs to servers for use in certificates and in the `iss` and `sub` claims of signed metadata elements (see [Section 2.3]).
-1. URI used to identify the community in metadata requests (see [Section 2.4]).
-1. Assignment of unique URIs to client applications for use in certificates and in the `iss` and `sub` claims of software statements (see [Section 3.1]).
-1. Assignment of unique URIs to organizational requestors for use in a B2B Authorization Extension Object (see `organization_id` in [Section 5.2.1.1]).
-1. Allowed values for requestor roles in a B2B Authorization Extension Object (see `subject_role` in [Section 5.2.1.1]).
-1. Permitted purposes of use for which data may be requested in a B2B Authorization Extension Object (see `purpose_of_use` in [Section 5.2.1.1]).
-1. Consent and authorization policies that may be asserted in a B2B Authorization Extension Object and supporting documentation (see `consent_policy` and `consent_reference` in [Section 5.2.1.1]).
-1. Other community policies or conditions that an actor may need to meet before exchanging data with community participants or with other trust communities. Examples include community legal agreements, certificate policies, policies regarding what claims an actor has the authority to assert, and other community requirements relating to the specific use cases, client types and/or grant types supported by the community.
 
 {% include link-list.md %}
